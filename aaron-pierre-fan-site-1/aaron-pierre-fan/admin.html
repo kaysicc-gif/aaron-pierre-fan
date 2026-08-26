@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin · Aaron Pierre Fan Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --card: #161616;
+      --gold: #c9a227;
+      --white: #f5f5f0;
+      --muted: #a0a098;
+      --border: rgba(201,162,39,0.3);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; }
+    h1 {
+      font-size: 1.35rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--gold);
+    }
+    .sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+    .auth-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 360px;
+      margin: 4rem auto;
+    }
+    .auth-box label { display: block; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
+    .auth-box input {
+      width: 100%;
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.7rem;
+      color: var(--white);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .auth-box button {
+      width: 100%;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      padding: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .error { color: #e07070; font-size: 0.85rem; margin-top: 0.75rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.75rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    th { color: var(--gold); font-weight: 500; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    select {
+      background: #0d0d0d;
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 0.3rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.8rem;
+    }
+    .status {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .PENDING { background: #3a3010; color: #e0c15a; }
+    .VERIFIED { background: #1a3020; color: #6dca8a; }
+    .COMPLETED { background: #102030; color: #6ab0e0; }
+    .REJECTED { background: #301818; color: #e07070; }
+    .logout {
+      float: right;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .logout:hover { color: var(--gold); border-color: var(--gold); }
+    .empty { text-align: center; color: var(--muted); padding: 3rem; }
+    @media (max-width: 700px) {
+      table { font-size: 0.75rem; }
+      th, td { padding: 0.5rem 0.3rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="loginView">
+      <div class="auth-box">
+        <h1 style="text-align:center;margin-bottom:1.25rem;">Admin Access</h1>
+        <label for="pass">Password</label>
+        <input type="password" id="pass" placeholder="Enter admin password">
+        <button id="loginBtn">Enter</button>
+        <p class="error" id="loginError" hidden>Incorrect password</p>
+        <p style="margin-top:1rem;font-size:0.75rem;color:var(--muted);text-align:center;">Demo password: <code>apfan2026</code></p>
+      </div>
+    </div>
+
+    <div id="adminView" hidden>
+      <button class="logout" id="logoutBtn">Log out</button>
+      <h1>Purchases</h1>
+      <p class="sub">Lightweight view of membership requests. Update status only. No sensitive payment data is stored.</p>
+      <div id="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Tier</th>
+              <th>Payment</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <p class="empty" id="emptyMsg" hidden>No purchases yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DEMO_PASS = 'apfan2026';
+    const loginView = document.getElementById('loginView');
+    const adminView = document.getElementById('adminView');
+    const tbody = document.getElementById('tbody');
+    const emptyMsg = document.getElementById('emptyMsg');
+
+    function isAuthed() {
+      return sessionStorage.getItem('ap_admin') === '1';
+    }
+
+    function showAdmin() {
+      loginView.hidden = true;
+      adminView.hidden = false;
+      render();
+    }
+
+    function showLogin() {
+      loginView.hidden = false;
+      adminView.hidden = true;
+    }
+
+    if (isAuthed()) showAdmin();
+    else showLogin();
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const pass = document.getElementById('pass').value;
+      if (pass === DEMO_PASS) {
+        sessionStorage.setItem('ap_admin', '1');
+        showAdmin();
+      } else {
+        document.getElementById('loginError').hidden = false;
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('ap_admin');
+      showLogin();
+    });
+
+    function render() {
+      const purchases = JSON.parse(localStorage.getItem('ap_purchases') || '[]');
+      tbody.innerHTML = '';
+      if (purchases.length === 0) {
+        emptyMsg.hidden = false;
+        return;
+      }
+      emptyMsg.hidden = true;
+      purchases.slice().reverse().forEach((p, idx) => {
+        const realIdx = purchases.length - 1 - idx;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.id}</td>
+          <td>${escapeHtml(p.fullName)}</td>
+          <td>${escapeHtml(p.email)}</td>
+          <td>${escapeHtml(p.tier)}</td>
+          <td>${escapeHtml(p.paymentMethod)}</td>
+          <td>${new Date(p.date).toLocaleDateString()}</td>
+          <td>
+            <select data-idx="${realIdx}">
+              <option value="PENDING" ${p.status==='PENDING'?'selected':''}>PENDING</option>
+              <option value="VERIFIED" ${p.status==='VERIFIED'?'selected':''}>VERIFIED</option>
+              <option value="COMPLETED" ${p.status==='COMPLETED'?'selected':''}>COMPLETED</option>
+              <option value="REJECTED" ${p.status==='REJECTED'?'selected':''}>REJECTED</option>
+            </select>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      tbody.querySelectorAll('select').forEach(sel => {
+        sel.addEventListener('change', () => {
+          const purchases = JSON.parse(localStorage.getItem('ap_purchases') || '[]');
+          const i = parseInt(sel.dataset.idx, 10);
+          purchases[i].status = sel.value;
+          localStorage.setItem('ap_purchases', JSON.stringify(purchases));
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
