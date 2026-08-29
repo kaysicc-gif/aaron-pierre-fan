@@ -1,166 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site Analysis Report (SAR) | Aaron Pierre Fan Experience</title>
-<meta name="description" content="Client-side Site Analysis Report for the Aaron Pierre Fan Experience website.">
-<meta name="theme-color" content="#111111">
-<style>
-:root{--bg:#080808;--panel:#111;--panel2:#171717;--text:#f5f5f5;--muted:#aaa;--line:#292929;--accent:#d6b56d;--good:#55c878;--warn:#f0b44d;--bad:#ef6262}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#080808,#111);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.5}
-.wrap{max-width:1100px;margin:auto;padding:22px 15px 50px}.back{color:var(--accent);text-decoration:none;font-weight:700}.hero{padding:28px 0 18px}.eyebrow{text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-size:12px;font-weight:800}.hero h1{font-size:clamp(28px,7vw,48px);line-height:1.05;margin:8px 0}.hero p{color:var(--muted);max-width:760px}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:12px 16px;border-radius:10px;font-weight:700;cursor:pointer}.btn.primary{background:var(--accent);color:#111;border-color:var(--accent)}
-.status{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--muted);font-size:13px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.card{background:rgba(20,20,20,.95);border:1px solid var(--line);border-radius:14px;padding:17px}.score{font-size:35px;font-weight:800}.label{font-weight:700}.small{font-size:12px;color:var(--muted)}
-.bar{height:9px;background:#292929;border-radius:99px;overflow:hidden;margin-top:10px}.fill{height:100%;width:0;background:var(--accent);transition:width .5s}
-section{margin-top:18px}.section-title{font-size:20px;margin:0 0 10px}.checks{display:grid;gap:9px}.check{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}.icon{font-weight:900;min-width:22px}.pass .icon{color:var(--good)}.warn .icon{color:var(--warn)}.fail .icon{color:var(--bad)}
-.summary{display:grid;grid-template-columns:180px 1fr;gap:18px;align-items:center}.bigscore{font-size:68px;font-weight:900;line-height:1}.pill{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;background:var(--panel2);border:1px solid var(--line)}
-@media(max-width:600px){.summary{grid-template-columns:1fr}.bigscore{font-size:56px}}
-footer{margin-top:30px;color:#777;font-size:12px;text-align:center}
-</style>
-</head>
-<body>
-<div class="wrap">
-<a class="back" href="index.html">← Back to Aaron Pierre Fan Experience</a>
-<header class="hero">
-<div class="eyebrow">SAR • Site Analysis Report</div>
-<h1>Website Health Report</h1>
-<p>Run a browser-based audit of the published website. The report checks measurable HTML, metadata, links, images, accessibility basics, security signals, and page structure. It does not invent server-only performance or SEO data.</p>
-<div class="toolbar">
-<button class="btn primary" id="runBtn">Run Full Site Analysis</button>
-<button class="btn" onclick="window.print()">Print / Save PDF</button>
-<span class="status" id="status">Ready to analyze</span>
-</div>
-</header>
-
-<section class="card summary">
-<div><div class="small">OVERALL HEALTH</div><div class="bigscore" id="overall">—</div><span class="pill" id="grade">Not analyzed</span></div>
-<div><p id="summaryText">Press “Run Full Site Analysis” to scan the live site.</p><div class="bar"><div class="fill" id="overallBar"></div></div></div>
-</section>
-
-<section>
-<h2 class="section-title">Category scores</h2>
-<div class="grid">
-<div class="card"><div class="small">SEO</div><div class="score" id="seoScore">—</div><div class="bar"><div class="fill" id="seoBar"></div></div></div>
-<div class="card"><div class="small">ACCESSIBILITY</div><div class="score" id="a11yScore">—</div><div class="bar"><div class="fill" id="a11yBar"></div></div></div>
-<div class="card"><div class="small">TECHNICAL</div><div class="score" id="techScore">—</div><div class="bar"><div class="fill" id="techBar"></div></div></div>
-<div class="card"><div class="small">CONTENT / UX</div><div class="score" id="contentScore">—</div><div class="bar"><div class="fill" id="contentBar"></div></div></div>
-</div>
-</section>
-
-<section class="card">
-<h2 class="section-title">Detailed findings</h2>
-<div class="checks" id="findings"><div class="check"><div class="icon">•</div><div>Analysis has not been run yet.</div></div></div>
-</section>
-
-<section class="card">
-<h2 class="section-title">Priority action plan</h2>
-<div id="actions" class="checks"><div class="check"><div>Run the audit to generate prioritized recommendations.</div></div></div>
-</section>
-
-<footer>Generated locally in your browser • Aaron Pierre Fan Experience • SAR</footer>
-</div>
-
-<script>
-const $=id=>document.getElementById(id);
-const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function setScore(id,score){$(id).textContent=score+'%';$(id.replace('Score','Bar')).style.width=score+'%'}
-function addFinding(list, type, title, detail){
- const icon=type==='pass'?'✓':type==='warn'?'!':'×';
- list.push(`<div class="check ${type}"><div class="icon">${icon}</div><div><b>${esc(title)}</b><div class="small">${esc(detail)}</div></div></div>`);
-}
-async function analyze(){
- $('status').textContent='Analyzing index.html…';
- $('findings').innerHTML='';
- $('actions').innerHTML='';
- try{
-  const res=await fetch('index.html',{cache:'no-store'});
-  if(!res.ok) throw new Error('Could not load index.html ('+res.status+')');
-  const text=await res.text();
-  const doc=new DOMParser().parseFromString(text,'text/html');
-  const findings=[], actions=[];
-  let seo=0,a11y=0,tech=0,content=0;
-
-  // SEO
-  const title=doc.querySelector('title')?.textContent.trim()||'';
-  const desc=doc.querySelector('meta[name="description"]')?.getAttribute('content')||'';
-  const canonical=doc.querySelector('link[rel="canonical"]');
-  const viewport=doc.querySelector('meta[name="viewport"]');
-  const h1=doc.querySelectorAll('h1').length;
-  if(title){seo+=25;addFinding(findings,'pass','Page title present',title.slice(0,140))}
-  else {addFinding(findings,'fail','Missing page title','Add a descriptive <title> to index.html.');actions.push('Add a unique, descriptive page title.')}
-  if(desc){seo+=25;addFinding(findings,'pass','Meta description present',desc.slice(0,160))}
-  else {addFinding(findings,'warn','Meta description missing','Add a concise description for search previews.');actions.push('Add a meta description.')}
-  if(viewport){seo+=20;addFinding(findings,'pass','Mobile viewport configured','Responsive viewport meta tag detected.')}
-  else {addFinding(findings,'warn','Viewport meta tag missing','Mobile rendering may be less reliable.');actions.push('Add a responsive viewport meta tag.')}
-  if(h1===1){seo+=20;addFinding(findings,'pass','One H1 heading detected','Good primary heading structure.')}
-  else if(h1>1){seo+=10;addFinding(findings,'warn','Multiple H1 headings detected',h1+' H1 elements found.')}
-  else {addFinding(findings,'warn','No H1 heading detected','Add one clear primary heading.');actions.push('Add a single meaningful H1.')}
-  if(canonical){seo+=10;addFinding(findings,'pass','Canonical URL present','Canonical link detected.')}
-  else {addFinding(findings,'warn','Canonical URL not detected','Consider adding one for production SEO.');actions.push('Consider adding a canonical URL.')}
-
-  // Accessibility
-  const imgs=[...doc.images], missingAlt=imgs.filter(i=>!i.hasAttribute('alt')).length;
-  if(imgs.length===0){a11y+=30;addFinding(findings,'pass','No images requiring alt text found','No <img> elements were detected.')}
-  else if(missingAlt===0){a11y+=30;addFinding(findings,'pass','Images have alt attributes',imgs.length+' image(s) checked.')}
-  else {addFinding(findings,'fail','Images missing alt attributes',missingAlt+' of '+imgs.length+' image(s) lack alt text.');actions.push('Add meaningful alt text to images that convey information.')}
-  const buttons=[...doc.querySelectorAll('button')], links=[...doc.querySelectorAll('a')];
-  const emptyButtons=buttons.filter(b=>!b.textContent.trim()&&!b.getAttribute('aria-label')).length;
-  if(emptyButtons===0){a11y+=25;addFinding(findings,'pass','Interactive buttons have accessible names','No unnamed buttons detected.')}
-  else {addFinding(findings,'warn','Unnamed buttons detected',emptyButtons+' button(s) have no visible label or aria-label.');actions.push('Give every interactive button an accessible name.')}
-  if(viewport){a11y+=15}
-  const lang=doc.documentElement.getAttribute('lang');
-  if(lang){a11y+=20;addFinding(findings,'pass','Document language declared','lang="'+lang+'" detected.')}
-  else {addFinding(findings,'warn','Document language missing','Set a language on the <html> element.');actions.push('Add a valid lang attribute to <html>.')}
-  const labels=[...doc.querySelectorAll('input,textarea,select')].filter(x=>!x.closest('[aria-hidden="true"]'));
-  const unlabeled=labels.filter(x=>!x.getAttribute('aria-label') && !x.id || (x.id && !doc.querySelector(`label[for="${CSS.escape(x.id)}"]`) && !x.getAttribute('aria-label'))).length;
-  if(unlabeled===0){a11y+=10;addFinding(findings,'pass','Form controls appear labeled','No obvious unlabeled form controls detected.')}
-  else {addFinding(findings,'warn','Some form controls may need labels',unlabeled+' control(s) need manual accessibility review.');actions.push('Review labels and keyboard accessibility for form controls.')}
-
-  // Technical
-  const external=[...doc.querySelectorAll('script[src],link[href],img[src]')].filter(x=>(x.src||x.href||'').startsWith('http'));
-  if(text.length>0){tech+=20;addFinding(findings,'pass','HTML document loads','index.html returned successfully.')}
-  if(viewport){tech+=20}
-  const scripts=[...doc.scripts].filter(s=>s.src);
-  if(scripts.length){tech+=20;addFinding(findings,'pass','External JavaScript resources detected',scripts.length+' external script(s).')}
-  else {tech+=20;addFinding(findings,'pass','No external JavaScript dependency detected','The page can load its scripts locally.')}
-  if(external.length<15){tech+=20;addFinding(findings,'pass','External resource count is moderate',external.length+' external resource reference(s) detected.')}
-  else {tech+=10;addFinding(findings,'warn','Many external resource references',external.length+' external references detected; review loading and privacy impact.');actions.push('Review external resources and remove unnecessary dependencies.')}
-  if(text.toLowerCase().includes('http://')){addFinding(findings,'warn','HTTP resource references detected','Review mixed-content risks on HTTPS hosting.');actions.push('Replace HTTP resource URLs with HTTPS where possible.')}
-  else {tech+=20;addFinding(findings,'pass','No plain HTTP references detected','No http:// references found in the HTML source.')}
-
-  // Content / UX
-  const textContent=doc.body?.innerText?.replace(/\s+/g,' ').trim()||'';
-  const wordCount=textContent.split(/\s+/).filter(Boolean).length;
-  if(wordCount>=200){content+=30;addFinding(findings,'pass','Substantial visible content detected',wordCount+' visible words (approximate).')}
-  else {content+=15;addFinding(findings,'warn','Limited visible text detected',wordCount+' visible words (approximate); consider whether key information is clear.')}
-  if(links.length>=3){content+=25;addFinding(findings,'pass','Navigation/link structure detected',links.length+' links found.')}
-  else {content+=10;addFinding(findings,'warn','Limited navigation detected',links.length+' links found.')}
-  const headings=doc.querySelectorAll('h1,h2,h3,h4,h5,h6').length;
-  if(headings>=2){content+=25;addFinding(findings,'pass','Heading hierarchy detected',headings+' headings found.')}
-  else {content+=10;addFinding(findings,'warn','Sparse heading structure','Use headings to organize important sections.');actions.push('Improve heading hierarchy for scanning and usability.')}
-  if(doc.querySelector('main')){content+=20;addFinding(findings,'pass','Main landmark detected','<main> element found.')}
-  else {content+=10;addFinding(findings,'warn','Main landmark not detected','Consider wrapping primary content in <main>.');actions.push('Add semantic landmarks such as main/nav/header/footer where appropriate.')}
-
-  seo=Math.min(100,seo);a11y=Math.min(100,a11y);tech=Math.min(100,tech);content=Math.min(100,content);
-  const overall=Math.round((seo+a11y+tech+content)/4);
-  setScore('seoScore',seo);setScore('a11yScore',a11y);setScore('techScore',tech);setScore('contentScore',content);
-  $('overall').textContent=overall;
-  $('overallBar').style.width=overall+'%';
-  const grade=overall>=90?'Excellent':overall>=75?'Good':overall>=60?'Needs improvement':'Needs attention';
-  $('grade').textContent=grade;
-  $('summaryText').textContent=`The audit completed with an overall score of ${overall}%. Review warnings and failures below before treating the site as production-ready.`;
-  $('findings').innerHTML=findings.join('');
-  if(!actions.length) actions.push('No high-priority automated actions were identified. Continue with manual UX, privacy, security, and real-device testing.');
-  $('actions').innerHTML=actions.map((x,i)=>`<div class="check ${i<2?'warn':'pass'}"><div class="icon">${i<2?'!':'✓'}</div><div>${esc(x)}</div></div>`).join('');
-  $('status').textContent='Analysis complete • '+new Date().toLocaleString();
- }catch(e){
-  $('status').textContent='Analysis failed';
-  $('findings').innerHTML=`<div class="check fail"><div class="icon">×</div><div><b>Could not analyze the site</b><div class="small">${esc(e.message)}</div></div></div>`;
- }
-}
-$('runBtn').addEventListener('click',analyze);
-</script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Site Analysis Report | Aaron Pierre</title><meta name="description" content="Browser-based Site Analysis Report for the Aaron Pierre website."><style>
+:root{--b:#080808;--p:#121212;--t:#f4f1e9;--m:#aaa39a;--g:#d7b46a;--l:#2a2824;--ok:#59cb7b;--w:#efb44d;--bad:#ee6464}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#211b10,transparent 30%),var(--b);color:var(--t);font:15px/1.55 system-ui,sans-serif}.wrap{max-width:1050px;margin:auto;padding:25px 16px 60px}.back{color:var(--g);text-decoration:none;font-weight:800}.hero{padding:38px 0 18px}.ey{font-size:11px;letter-spacing:2px;color:var(--g);font-weight:900}.hero h1{font-size:clamp(36px,7vw,62px);line-height:1;margin:8px 0}.muted,.small{color:var(--m)}.tools{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.btn{padding:12px 16px;border-radius:9px;border:1px solid var(--l);background:#121212;color:var(--t);font-weight:800}.primary{background:var(--g);color:#111}.status,.card{background:var(--p);border:1px solid var(--l);border-radius:14px;padding:18px}.summary{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center}.score{font-size:60px;font-weight:900;line-height:1}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.bar{height:9px;background:#2a2926;border-radius:99px;overflow:hidden;margin-top:10px}.fill{height:100%;width:0;background:var(--g);transition:.4s}.section{margin-top:16px}.checks{display:grid;gap:9px}.check{display:flex;gap:10px;padding:12px;border:1px solid var(--l);border-radius:10px;background:#0f0f0f}.pass .icon{color:var(--ok)}.warn .icon{color:var(--w)}.fail .icon{color:var(--bad)}h2{font-size:20px}@media(max-width:700px){.grid{grid-template-columns:1fr 1fr}.summary{grid-template-columns:1fr}}@media(max-width:430px){.grid{grid-template-columns:1fr}}
+</style></head><body><div class="wrap"><a class="back" href="index.html">← Back to Aaron Pierre</a><header class="hero"><div class="ey">SAR / SITE ANALYSIS REPORT</div><h1>Website Health</h1><p class="muted">A transparent browser audit. Scores are based on measurable page data only; server-only metrics are not fabricated.</p><div class="tools"><button class="btn primary" id="run">Run Full Site Analysis</button><button class="btn" onclick="window.print()">Print / Save PDF</button><span class="status" id="status">Ready</span></div></header><section class="card summary"><div><div class="small">OVERALL</div><div class="score" id="overall">—</div><div class="small" id="grade">Not analyzed</div></div><div><p id="summary">Run the audit.</p><div class="bar"><div class="fill" id="overallBar"></div></div></div></section><section class="section"><h2>Category scores</h2><div class="grid"><div class="card"><div class="small">SEO</div><div class="score" id="seo">—</div><div class="bar"><div class="fill" id="seoBar"></div></div></div><div class="card"><div class="small">ACCESSIBILITY</div><div class="score" id="a11y">—</div><div class="bar"><div class="fill" id="a11yBar"></div></div></div><div class="card"><div class="small">TECHNICAL</div><div class="score" id="tech">—</div><div class="bar"><div class="fill" id="techBar"></div></div></div><div class="card"><div class="small">CONTENT / UX</div><div class="score" id="content">—</div><div class="bar"><div class="fill" id="contentBar"></div></div></div></div></section><section class="card section"><h2>Detailed findings</h2><div id="findings" class="checks"><div class="check"><span>•</span><span>Run the analysis.</span></div></div></section><section class="card section"><h2>Priority action plan</h2><div id="actions" class="checks"></div></section></div><script>
+const $=x=>document.getElementById(x),E=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));function F(a,t,h,d){a.push(`<div class="check ${t}"><span class="icon">${t=="pass"?"✓":t=="warn"?"!":"×"}</span><span><b>${E(h)}</b><div class="small">${E(d)}</div></span></div>`)}function S(id,n){$(id).textContent=n+"%";$(id+"Bar").style.width=n+"%"}async function run(){let a=[],x=[];$("status").textContent="Analyzing…";try{let r=await fetch("index.html",{cache:"no-store"});if(!r.ok)throw Error("index.html returned "+r.status);let s=await r.text(),d=new DOMParser().parseFromString(s,"text/html"),seo=0,aa=0,te=0,co=0,title=d.title.trim(),desc=d.querySelector('meta[name="description"]'),vp=d.querySelector('meta[name="viewport"]'),h=d.querySelectorAll("h1").length;
+if(title){seo+=25;F(a,"pass","Title present",title)}else{x.push("Add a descriptive title.");F(a,"fail","Missing title","No title detected.")}
+if(desc?.content){seo+=25;F(a,"pass","Meta description present",desc.content)}else{x.push("Add a meta description.");F(a,"warn","Meta description missing","Search description not detected.")}
+if(vp){seo+=20;aa+=10;te+=20;F(a,"pass","Responsive viewport present","Mobile viewport detected.")}else{x.push("Add the viewport meta tag.");F(a,"warn","Viewport missing","Mobile viewport not detected.")}
+if(h===1){seo+=20;F(a,"pass","Single H1 detected","Primary heading structure is clear.")}else{seo+=10;x.push("Use one clear primary H1.");F(a,"warn","H1 structure needs review",h+" H1 elements detected.")}
+if(d.querySelector('link[rel="canonical"]')){seo+=10;F(a,"pass","Canonical URL present","Canonical link detected.")}else{F(a,"warn","Canonical URL not detected","Consider adding one for production SEO.");x.push("Consider a canonical URL.")}
+let im=[...d.images],mi=im.filter(i=>!i.hasAttribute("alt")).length;if(!mi){aa+=35;F(a,"pass","Image alt attributes","Detected images have alt attributes.")}else{x.push("Add meaningful image alt text.");F(a,"fail","Images missing alt text",mi+" image(s) need review.")}
+if(d.documentElement.lang){aa+=25;F(a,"pass","Document language declared","lang="+d.documentElement.lang)}else{x.push("Add a lang attribute.");F(a,"warn","Document language missing","No html lang attribute.")}
+let b=[...d.querySelectorAll("button")],ub=b.filter(q=>!q.textContent.trim()&&!q.getAttribute("aria-label")).length;if(!ub){aa+=20;F(a,"pass","Buttons have accessible names","No unnamed buttons detected.")}else{x.push("Label interactive buttons.");F(a,"warn","Unnamed buttons",ub+" button(s) need review.")}
+aa+=20;te+=20;F(a,"pass","HTML loads successfully","index.html returned successfully.");let ext=[...d.querySelectorAll("script[src],link[href],img[src]")].filter(q=>(q.src||q.href||"").startsWith("http")).length;if(ext<15){te+=20;F(a,"pass","External resources are moderate",ext+" external resource references.")}else{te+=10;x.push("Review external dependencies.");F(a,"warn","Many external resources",ext+" references detected.")}
+if(!s.toLowerCase().includes("http://")){te+=20;F(a,"pass","No plain HTTP references","No http:// references found.")}else{x.push("Use HTTPS resources.");F(a,"warn","HTTP references detected","Mixed-content risk should be reviewed.")}
+te+=20;F(a,"pass","Static-hosting friendly","The site can run on GitHub Pages.");let words=(d.body.innerText||"").trim().split(/\s+/).filter(Boolean).length;if(words>=250){co+=30;F(a,"pass","Useful visible content",words+" approximate words.")}else{co+=15;F(a,"warn","Limited visible content",words+" approximate words.")}let links=d.querySelectorAll("a").length;if(links>=5){co+=25;F(a,"pass","Navigation structure",links+" links detected.")}else{co+=10}
+if(d.querySelectorAll("h1,h2,h3").length>=4){co+=25;F(a,"pass","Heading hierarchy","Multiple section headings detected.")}else{co+=10}if(d.querySelector("main")){co+=20;F(a,"pass","Main landmark present","Semantic main element detected.")}else{co+=10;x.push("Add semantic landmarks.")}
+seo=Math.min(100,seo);aa=Math.min(100,aa);te=Math.min(100,te);co=Math.min(100,co);let o=Math.round((seo+aa+te+co)/4);S("seo",seo);S("a11y",aa);S("tech",te);S("content",co);$("overall").textContent=o;$("overallBar").style.width=o+"%";$("grade").textContent=o>=90?"Excellent":o>=75?"Good":o>=60?"Needs improvement":"Needs attention";$("summary").textContent="Audit complete. Overall score: "+o+"%."; $("findings").innerHTML=a.join("");if(!x.length)x.push("No high-priority automated issues detected. Continue manual testing.");$("actions").innerHTML=x.map(v=>`<div class="check warn"><span class="icon">!</span><span>${E(v)}</span></div>`).join("");$("status").textContent="Analysis complete • "+new Date().toLocaleString()}catch(e){$("status").textContent="Analysis failed";$("findings").innerHTML=`<div class="check fail"><span class="icon">×</span><span>${E(e.message)}</span></div>`}}$("run").onclick=run;
+</script></body></html>
