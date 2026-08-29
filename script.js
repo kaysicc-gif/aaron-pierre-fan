@@ -92,10 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Payment method notes
   const paymentNotes = {
     card: document.getElementById('cardPaymentNote'),
-    bitcoin: document.getElementById('bitcoinNote'),
-    ethereum: document.getElementById('ethereumNote'),
-    usdt: document.getElementById('usdtNote'),
-    solana: document.getElementById('solanaNote'),
+    crypto: document.getElementById('cryptoNote'),
+    'bitcoin-direct': document.getElementById('bitcoinDirectNote'),
     apple: document.getElementById('appleNote')
   };
 
@@ -149,10 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const purchaseForm = document.getElementById('purchaseForm');
   const purchaseNote = document.getElementById('purchaseNote');
 
-  purchaseForm?.addEventListener('submit', (e) => {
+  purchaseForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = new FormData(purchaseForm);
+    const paymentMethod = formData.get('payment');
+    const cryptoCoin = formData.get('crypto_coin') || null;
+
     const data = {
       id: 'AP-' + Date.now().toString(36).toUpperCase(),
       fullName: formData.get('fullName'),
@@ -161,7 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
       country: formData.get('country'),
       tier: selectedName,
       price: selectedPrice,
-      paymentMethod: formData.get('payment'),
+      paymentMethod: paymentMethod,
+      cryptoCoin: cryptoCoin,
       status: 'PENDING',
       date: new Date().toISOString()
     };
@@ -173,16 +175,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Safety: never claim payment received
     purchaseNote.hidden = false;
-    purchaseNote.textContent = `Thank you. Your membership request (${data.id}) has been submitted and is PENDING verification. You will receive an email once payment is confirmed and your digital fan card is issued. Do not assume payment has been processed until you receive official confirmation.`;
     purchaseNote.style.color = 'var(--gold)';
 
-    purchaseForm.reset();
-    previewName.textContent = 'Your Name';
+    if (paymentMethod === 'crypto') {
+      // ============================================================
+      // NOWPayments integration point
+      // ------------------------------------------------------------
+      // In production, call your backend which then calls NOWPayments:
+      //
+      // POST https://api.nowpayments.io/v1/invoice
+      // Headers: { 'x-api-key': YOUR_NOWPAYMENTS_API_KEY }
+      // Body: {
+      //   price_amount: data.price,
+      //   price_currency: 'usd',
+      //   pay_currency: data.cryptoCoin,   // e.g. 'btc', 'eth', 'usdttrc20'
+      //   order_id: data.id,
+      //   order_description: `Aaron Pierre Fan Membership - ${data.tier}`,
+      //   ipn_callback_url: 'https://yourdomain.com/api/nowpayments-webhook',
+      //   success_url: 'https://yourdomain.com/?payment=success',
+      //   cancel_url: 'https://yourdomain.com/?payment=cancelled'
+      // }
+      //
+      // Response contains invoice_url → redirect the user there.
+      // ============================================================
 
-    // In production: redirect to Stripe Checkout or show Bitcoin instructions securely
-    if (data.paymentMethod === 'card') {
-      // Placeholder for Stripe redirect
-      console.log('Would redirect to Stripe Checkout with tier:', data.tier, 'amount:', data.price);
+      purchaseNote.textContent = `Order ${data.id} created (PENDING). A unique NOWPayments invoice for ${cryptoCoin?.toUpperCase() || 'crypto'} will be generated. Start the Node.js backend and uncomment the fetch below to redirect to the real invoice.`;
+
+      // ----------------------------------------------------------
+      // Enable this block when the backend is running:
+      // ----------------------------------------------------------
+      // const BACKEND_URL = 'http://localhost:3001'; // change in production
+      // try {
+      //   const res = await fetch(`${BACKEND_URL}/api/create-nowpayments-invoice`, {
+      //     method: 'POST',
+      //     headers: { 'Content-Type': 'application/json' },
+      //     body: JSON.stringify({
+      //       orderId: data.id,
+      //       amount: data.price,
+      //       currency: data.cryptoCoin,
+      //       tier: data.tier,
+      //       email: data.email,
+      //       fullName: data.fullName
+      //     })
+      //   });
+      //   const result = await res.json();
+      //   if (result.invoice_url) {
+      //     window.location.href = result.invoice_url;
+      //     return;
+      //   }
+      //   purchaseNote.textContent = result.error || 'Unable to create payment invoice.';
+      // } catch (err) {
+      //   console.error(err);
+      //   purchaseNote.textContent = 'Unable to reach payment server. Please try again or use Direct Bitcoin.';
+      // }
+
+    } else if (paymentMethod === 'bitcoin-direct') {
+      purchaseNote.textContent = `Order ${data.id} submitted (PENDING). Please send the exact amount in BTC to the authorized address shown above. Your membership will be activated only after the payment is confirmed on the blockchain and verified by the team.`;
+    } else if (paymentMethod === 'card') {
+      purchaseNote.textContent = `Order ${data.id} submitted (PENDING). In production you would now be redirected to a secure Stripe Checkout. You will receive confirmation once payment is completed.`;
+      // Placeholder: window.location.href = stripeCheckoutUrl;
+    } else {
+      purchaseNote.textContent = `Order ${data.id} submitted and is PENDING verification. You will receive an email once payment is confirmed and your digital fan card is issued.`;
+    }
+
+    // Do not reset the form immediately for crypto/direct so user can still see the address/QR
+    if (paymentMethod !== 'bitcoin-direct' && paymentMethod !== 'crypto') {
+      purchaseForm.reset();
+      previewName.textContent = 'Your Name';
     }
   });
 

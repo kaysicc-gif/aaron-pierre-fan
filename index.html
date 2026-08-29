@@ -280,6 +280,7 @@
           <a href="#contact">Contact</a>
           <a href="legal.html#terms">Terms</a>
           <a href="legal.html#privacy">Privacy</a>
+          <a href="admin.html#sar">Site Analysis Report</a>
           <a href="legal.html#payment-policy">Payment Policy</a>
         </nav>
       </div>
@@ -328,20 +329,12 @@
               <span>Credit / Debit Card</span>
             </label>
             <label class="payment-option">
-              <input type="radio" name="payment" value="bitcoin">
-              <span>Bitcoin (BTC)</span>
+              <input type="radio" name="payment" value="crypto">
+              <span>Cryptocurrency (NOWPayments)</span>
             </label>
             <label class="payment-option">
-              <input type="radio" name="payment" value="ethereum">
-              <span>Ethereum (ETH)</span>
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="payment" value="usdt">
-              <span>USDT (Tether)</span>
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="payment" value="solana">
-              <span>Solana (SOL)</span>
+              <input type="radio" name="payment" value="bitcoin-direct">
+              <span>Direct Bitcoin (Manual)</span>
             </label>
             <label class="payment-option">
               <input type="radio" name="payment" value="apple">
@@ -354,8 +347,40 @@
           <p>You will be redirected to a secure Stripe checkout (or equivalent processor) to complete card payment. No card details are stored on this website.</p>
         </div>
 
-        <div id="bitcoinNote" class="payment-note" hidden>
-          <p><strong>Authorized Bitcoin (BTC) Receive Address</strong></p>
+        <!-- NOWPayments multi-crypto invoice flow -->
+        <div id="cryptoNote" class="payment-note" hidden>
+          <p><strong>Pay with Cryptocurrency via NOWPayments</strong></p>
+          <p class="btc-instruction">Select your preferred coin. After you submit this form, a unique payment invoice will be created. You will receive a payment address / QR code and can pay in BTC, ETH, USDT, SOL, and many other supported assets.</p>
+          
+          <div class="crypto-coin-select">
+            <label class="coin-option">
+              <input type="radio" name="crypto_coin" value="btc" checked>
+              <span>Bitcoin (BTC)</span>
+            </label>
+            <label class="coin-option">
+              <input type="radio" name="crypto_coin" value="eth">
+              <span>Ethereum (ETH)</span>
+            </label>
+            <label class="coin-option">
+              <input type="radio" name="crypto_coin" value="usdttrc20">
+              <span>USDT (TRC20)</span>
+            </label>
+            <label class="coin-option">
+              <input type="radio" name="crypto_coin" value="usdterc20">
+              <span>USDT (ERC20)</span>
+            </label>
+            <label class="coin-option">
+              <input type="radio" name="crypto_coin" value="sol">
+              <span>Solana (SOL)</span>
+            </label>
+          </div>
+
+          <p class="btc-warning" style="margin-top:1rem;">After submitting, your order is created as <strong>PENDING</strong>. A unique invoice link or address will be shown / emailed. Payment is confirmed only after blockchain confirmation and NOWPayments webhook. Never assume the membership is active until you receive official confirmation.</p>
+        </div>
+
+        <!-- Direct / manual BTC (authorized fixed address) -->
+        <div id="bitcoinDirectNote" class="payment-note" hidden>
+          <p><strong>Direct Bitcoin Payment (Authorized Address)</strong></p>
           <p class="btc-instruction">Send the exact USD equivalent in Bitcoin for your selected membership tier to the address below. Network: Bitcoin (Taproot).</p>
           <div class="btc-qr-wrap">
             <img src="btc-qr.png" alt="Bitcoin QR code for official receive address" class="btc-qr" width="160" height="160">
@@ -365,21 +390,6 @@
             <button type="button" class="btn-copy" data-copy-target="btcAddress" title="Copy address">Copy</button>
           </div>
           <p class="btc-warning">After sending, submit this form. Your order will remain <strong>PENDING</strong> until the payment is confirmed on the blockchain and verified by the team. Do not assume the membership is active until you receive official email confirmation and your digital fan card.</p>
-        </div>
-
-        <div id="ethereumNote" class="payment-note" hidden>
-          <p><strong>Ethereum (ETH)</strong></p>
-          <p>An authorized official ETH receive address will be provided by the team after you submit this form. Do not send funds to any address until you receive the official one. Your order will remain <strong>PENDING</strong> until payment is verified.</p>
-        </div>
-
-        <div id="usdtNote" class="payment-note" hidden>
-          <p><strong>USDT (Tether)</strong></p>
-          <p>An authorized official USDT receive address (network to be confirmed — e.g. TRC20 / ERC20) will be provided by the team after you submit this form. Do not send funds until you receive the official address and network details. Your order will remain <strong>PENDING</strong> until payment is verified.</p>
-        </div>
-
-        <div id="solanaNote" class="payment-note" hidden>
-          <p><strong>Solana (SOL)</strong></p>
-          <p>An authorized official SOL receive address will be provided by the team after you submit this form. Do not send funds to any address until you receive the official one. Your order will remain <strong>PENDING</strong> until payment is verified.</p>
         </div>
 
         <div id="appleNote" class="payment-note" hidden>

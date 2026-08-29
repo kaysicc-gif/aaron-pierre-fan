@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# Environment & secrets
+.env
+backend/.env
+*.pem
+*.key
+
+# Runtime data
+backend/orders.json
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# Build / temp
+dist/
+build/
+.cache/

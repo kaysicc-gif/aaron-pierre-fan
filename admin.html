@@ -204,7 +204,7 @@
           <td>${escapeHtml(p.fullName)}</td>
           <td>${escapeHtml(p.email)}</td>
           <td>${escapeHtml(p.tier)}</td>
-          <td>${escapeHtml(p.paymentMethod)}</td>
+          <td>${escapeHtml(p.paymentMethod)}${p.cryptoCoin ? ' (' + escapeHtml(p.cryptoCoin) + ')' : ''}</td>
           <td>${new Date(p.date).toLocaleDateString()}</td>
           <td>
             <select data-idx="${realIdx}">

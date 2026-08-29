@@ -921,6 +921,39 @@ ul {
   accent-color: var(--gold);
 }
 
+.crypto-coin-select {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.coin-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border-gold);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  transition: background 0.2s;
+}
+
+.coin-option:hover {
+  background: rgba(201,162,39,0.08);
+}
+
+.coin-option input {
+  accent-color: var(--gold);
+}
+
+@media (max-width: 480px) {
+  .crypto-coin-select {
+    grid-template-columns: 1fr;
+  }
+}
+
 .payment-note {
   font-size: 0.8rem;
   color: var(--white-muted);
