@@ -1,412 +1,73 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aaron Pierre Official Fan Experience</title>
-  <meta name="description" content="Officially authorized Aaron Pierre Fan Experience. Get your personalized membership fan card.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aaron Pierre | Actor</title>
+<meta name="description" content="Aaron Pierre — actor, performer and screen talent. Explore selected work, biography, media and latest highlights.">
+<meta name="theme-color" content="#080808">
+<meta property="og:title" content="Aaron Pierre | Actor">
+<meta property="og:description" content="Official-style actor portfolio experience for Aaron Pierre.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Header -->
-  <header class="header" id="header">
-    <div class="container header-inner">
-      <a href="#home" class="logo">
-        <span class="logo-ap">AP</span>
-        <div class="logo-text">
-          <span class="logo-name">AARON PIERRE</span>
-          <span class="logo-sub">OFFICIAL FAN EXPERIENCE</span>
-        </div>
-      </a>
-      <nav class="nav" id="nav">
-        <a href="#home" class="nav-link">HOME</a>
-        <a href="#membership" class="nav-link">MEMBERSHIP</a>
-        <a href="#about" class="nav-link">ABOUT</a>
-        <a href="#faq" class="nav-link">FAQ</a>
-        <a href="#contact" class="nav-link">CONTACT</a>
-        <a href="#membership" class="btn btn-gold btn-sm">GET YOUR FAN CARD</a>
-      </nav>
-      <button class="hamburger" id="hamburger" aria-label="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </header>
+<header class="nav">
+  <a class="wordmark" href="index.html"><span>AARON</span><b>PIERRE</b></a>
+  <nav aria-label="Primary">
+    <a href="#about">About</a><a href="#work">Work</a><a href="#media">Media</a><a href="sar.html">SAR</a>
+  </nav>
+</header>
 
-  <!-- Hero -->
-  <section class="hero" id="home">
-    <div class="hero-overlay"></div>
-    <div class="container hero-content">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        OFFICIALLY AUTHORIZED · VERIFIED BY AARON PIERRE & MANAGEMENT
-      </div>
-      <h1 class="hero-title">THE AARON PIERRE<br>FAN EXPERIENCE</h1>
-      <p class="hero-sub">Become part of an exclusive community of Aaron Pierre supporters with your personalized membership fan card.</p>
-      <div class="hero-buttons">
-        <a href="#membership" class="btn btn-gold">GET YOUR FAN CARD</a>
-        <a href="#membership" class="btn btn-outline">VIEW MEMBERSHIP</a>
-      </div>
-      <div class="scroll-indicator">
-        <span></span>
-      </div>
-    </div>
-    <div class="hero-image-wrap">
-      <img src="aaron-pierre.jpg" alt="Aaron Pierre" class="hero-image">
-    </div>
-  </section>
-
-  <!-- Membership -->
-  <section class="membership" id="membership">
-    <div class="container">
-      <h2 class="section-title">CHOOSE YOUR FAN MEMBERSHIP</h2>
-      <p class="section-sub">Select the tier that best matches your level of support.</p>
-      
-      <div class="tiers">
-        <!-- Bronze -->
-        <div class="tier-card" data-tier="bronze" data-price="570">
-          <div class="tier-header">
-            <h3 class="tier-name">BRONZE</h3>
-            <div class="tier-price">$570 <span>/ YEAR</span></div>
-          </div>
-          <ul class="tier-benefits">
-            <li>Personalized digital fan membership card</li>
-            <li>Member updates</li>
-            <li>Exclusive fan content</li>
-            <li>Fan community access</li>
-          </ul>
-          <button class="btn btn-outline-gold select-tier" data-tier="bronze" data-price="570" data-name="Bronze">GET BRONZE</button>
-        </div>
-
-        <!-- Silver -->
-        <div class="tier-card" data-tier="silver" data-price="1140">
-          <div class="tier-header">
-            <h3 class="tier-name">SILVER</h3>
-            <div class="tier-price">$1,140 <span>/ YEAR</span></div>
-          </div>
-          <ul class="tier-benefits">
-            <li>Everything in Bronze</li>
-            <li>Premium benefits</li>
-            <li>Priority consideration for eligible opportunities</li>
-            <li>Additional member content</li>
-          </ul>
-          <button class="btn btn-outline-gold select-tier" data-tier="silver" data-price="1140" data-name="Silver">GET SILVER</button>
-        </div>
-
-        <!-- Gold (Most Popular) -->
-        <div class="tier-card tier-featured" data-tier="gold" data-price="2280">
-          <div class="tier-badge">MOST POPULAR</div>
-          <div class="tier-header">
-            <h3 class="tier-name">GOLD</h3>
-            <div class="tier-price">$2,280 <span>/ YEAR</span></div>
-          </div>
-          <ul class="tier-benefits">
-            <li>Everything in Silver</li>
-            <li>VIP fan benefits</li>
-            <li>Eligible premium experiences</li>
-            <li>Priority consideration for eligible opportunities</li>
-          </ul>
-          <button class="btn btn-gold select-tier" data-tier="gold" data-price="2280" data-name="Gold">GET GOLD</button>
-        </div>
-
-        <!-- Platinum -->
-        <div class="tier-card" data-tier="platinum" data-price="2570">
-          <div class="tier-header">
-            <h3 class="tier-name">PLATINUM</h3>
-            <div class="tier-price">$2,570 <span>/ YEAR</span></div>
-          </div>
-          <ul class="tier-benefits">
-            <li>Everything in Gold</li>
-            <li>Elite membership status</li>
-            <li>Premium opportunities</li>
-            <li>Highest consideration for eligible experiences</li>
-          </ul>
-          <button class="btn btn-outline-gold select-tier" data-tier="platinum" data-price="2570" data-name="Platinum">GET PLATINUM</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Fan Card Mockup -->
-  <section class="fan-card-section" id="fan-card">
-    <div class="container">
-      <h2 class="section-title">YOUR AARON PIERRE FAN CARD</h2>
-      <p class="section-sub">Your personalized membership card is your digital connection to the Aaron Pierre Fan Experience.</p>
-      
-      <div class="card-mockup">
-        <div class="digital-card">
-          <div class="card-top">
-            <span class="card-logo">AP</span>
-            <div class="card-title-block">
-              <span class="card-brand">AARON PIERRE</span>
-              <span class="card-type">OFFICIAL FAN EXPERIENCE</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-field">
-              <label>Member Name</label>
-              <span class="card-value" id="preview-name">Your Name</span>
-            </div>
-            <div class="card-field">
-              <label>Membership Tier</label>
-              <span class="card-value" id="preview-tier">—</span>
-            </div>
-            <div class="card-field">
-              <label>Member ID</label>
-              <span class="card-value muted">Issued after purchase</span>
-            </div>
-          </div>
-          <div class="card-footer">
-            <span>OFFICIALLY AUTHORIZED</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="text-center" style="margin-top: 2.5rem;">
-        <a href="#membership" class="btn btn-gold">GET YOUR FAN CARD</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- About -->
-  <section class="about" id="about">
-    <div class="container narrow">
-      <h2 class="section-title">MORE THAN A FAN CARD</h2>
-      <p class="about-text">Join a community created for dedicated supporters of Aaron Pierre and receive a personalized membership experience designed to bring fans closer to the experience.</p>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="faq" id="faq">
-    <div class="container narrow">
-      <h2 class="section-title">FREQUENTLY ASKED QUESTIONS</h2>
-      
-      <div class="accordion">
-        <div class="accordion-item">
-          <button class="accordion-header">What is the Aaron Pierre Fan Membership Card?</button>
-          <div class="accordion-body">
-            <p>The Aaron Pierre Fan Membership Card is a personalized digital membership that connects dedicated supporters to the official fan experience. It provides access to member updates, exclusive content, and community features based on your selected tier.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">What does membership include?</button>
-          <div class="accordion-body">
-            <p>Benefits vary by tier. All members receive a personalized digital fan card, member updates, exclusive content, and community access. Higher tiers unlock premium benefits, priority consideration for eligible opportunities, and VIP experiences.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">How do I purchase a membership?</button>
-          <div class="accordion-body">
-            <p>Select your preferred tier on the Membership section, enter your details in the secure checkout form, choose a payment method, and complete the purchase. You will receive confirmation and your digital card once payment is verified.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">How will I receive my fan card?</button>
-          <div class="accordion-body">
-            <p>Your personalized digital fan card will be issued and delivered to the email address provided after payment verification is complete. Member ID is generated only after successful purchase confirmation.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">What payment methods are accepted?</button>
-          <div class="accordion-body">
-            <p>We accept credit/debit cards via secure processors (such as Stripe). Bitcoin and other methods may be available once fully configured. Never send payment information through unsecured channels.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">How can I contact support?</button>
-          <div class="accordion-body">
-            <p>Use the Contact form on this website. Our team will respond to membership and support inquiries as promptly as possible.</p>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <button class="accordion-header">Can I upgrade my membership?</button>
-          <div class="accordion-body">
-            <p>Yes. Contact support after purchase to inquire about upgrading to a higher tier. Upgrade options and any prorated adjustments will be confirmed by the team.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section class="contact" id="contact">
-    <div class="container narrow">
-      <h2 class="section-title">CONTACT</h2>
-      <form class="contact-form" id="contactForm">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="contact-name">Name</label>
-            <input type="text" id="contact-name" name="name" required placeholder="Your full name">
-          </div>
-          <div class="form-group">
-            <label for="contact-email">Email</label>
-            <input type="email" id="contact-email" name="email" required placeholder="you@example.com">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="contact-subject">Subject</label>
-          <input type="text" id="contact-subject" name="subject" required placeholder="Subject">
-        </div>
-        <div class="form-group">
-          <label for="contact-message">Message</label>
-          <textarea id="contact-message" name="message" rows="5" required placeholder="How can we help?"></textarea>
-        </div>
-        <button type="submit" class="btn btn-gold">SEND MESSAGE</button>
-      </form>
-      <p class="form-note" id="contactNote" hidden></p>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <span class="logo-ap">AP</span>
-          <div>
-            <strong>AARON PIERRE</strong>
-            <span>OFFICIAL FAN EXPERIENCE</span>
-          </div>
-        </div>
-        <nav class="footer-nav">
-          <a href="#home">Home</a>
-          <a href="#membership">Membership</a>
-          <a href="#about">About</a>
-          <a href="#faq">FAQ</a>
-          <a href="#contact">Contact</a>
-          <a href="legal.html#terms">Terms</a>
-          <a href="legal.html#privacy">Privacy</a>
-          <a href="admin.html#sar">Site Analysis Report</a>
-          <a href="legal.html#payment-policy">Payment Policy</a>
-        </nav>
-      </div>
-      <div class="footer-bottom">
-        <p>OFFICIALLY AUTHORIZED FAN EXPERIENCE</p>
-        <p class="copyright">© 2026 Aaron Pierre Official Fan Experience. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Purchase Modal -->
-  <div class="modal-overlay" id="purchaseModal" hidden>
-    <div class="modal">
-      <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
-      <h2 class="modal-title">Complete Your Membership</h2>
-      
-      <div class="selected-summary" id="selectedSummary">
-        <div class="summary-tier" id="summaryTier">GOLD</div>
-        <div class="summary-price" id="summaryPrice">$2,280 / YEAR</div>
-        <ul class="summary-benefits" id="summaryBenefits"></ul>
-      </div>
-
-      <form id="purchaseForm">
-        <div class="form-group">
-          <label for="fullName">Full Name</label>
-          <input type="text" id="fullName" name="fullName" required placeholder="As it should appear on your card">
-        </div>
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" required placeholder="you@example.com">
-        </div>
-        <div class="form-group">
-          <label for="phone">Phone Number</label>
-          <input type="tel" id="phone" name="phone" required placeholder="+1 000 000 0000">
-        </div>
-        <div class="form-group">
-          <label for="country">Country</label>
-          <input type="text" id="country" name="country" required placeholder="Your country">
-        </div>
-
-        <div class="payment-methods">
-          <p class="payment-label">Payment Method</p>
-          <div class="payment-options">
-            <label class="payment-option">
-              <input type="radio" name="payment" value="card" checked>
-              <span>Credit / Debit Card</span>
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="payment" value="crypto">
-              <span>Cryptocurrency (NOWPayments)</span>
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="payment" value="bitcoin-direct">
-              <span>Direct Bitcoin (Manual)</span>
-            </label>
-            <label class="payment-option">
-              <input type="radio" name="payment" value="apple">
-              <span>Apple Gift Card</span>
-            </label>
-          </div>
-        </div>
-
-        <div id="cardPaymentNote" class="payment-note">
-          <p>You will be redirected to a secure Stripe checkout (or equivalent processor) to complete card payment. No card details are stored on this website.</p>
-        </div>
-
-        <!-- NOWPayments multi-crypto invoice flow -->
-        <div id="cryptoNote" class="payment-note" hidden>
-          <p><strong>Pay with Cryptocurrency via NOWPayments</strong></p>
-          <p class="btc-instruction">Select your preferred coin. After you submit this form, a unique payment invoice will be created. You will receive a payment address / QR code and can pay in BTC, ETH, USDT, SOL, and many other supported assets.</p>
-          
-          <div class="crypto-coin-select">
-            <label class="coin-option">
-              <input type="radio" name="crypto_coin" value="btc" checked>
-              <span>Bitcoin (BTC)</span>
-            </label>
-            <label class="coin-option">
-              <input type="radio" name="crypto_coin" value="eth">
-              <span>Ethereum (ETH)</span>
-            </label>
-            <label class="coin-option">
-              <input type="radio" name="crypto_coin" value="usdttrc20">
-              <span>USDT (TRC20)</span>
-            </label>
-            <label class="coin-option">
-              <input type="radio" name="crypto_coin" value="usdterc20">
-              <span>USDT (ERC20)</span>
-            </label>
-            <label class="coin-option">
-              <input type="radio" name="crypto_coin" value="sol">
-              <span>Solana (SOL)</span>
-            </label>
-          </div>
-
-          <p class="btc-warning" style="margin-top:1rem;">After submitting, your order is created as <strong>PENDING</strong>. A unique invoice link or address will be shown / emailed. Payment is confirmed only after blockchain confirmation and NOWPayments webhook. Never assume the membership is active until you receive official confirmation.</p>
-        </div>
-
-        <!-- Direct / manual BTC (authorized fixed address) -->
-        <div id="bitcoinDirectNote" class="payment-note" hidden>
-          <p><strong>Direct Bitcoin Payment (Authorized Address)</strong></p>
-          <p class="btc-instruction">Send the exact USD equivalent in Bitcoin for your selected membership tier to the address below. Network: Bitcoin (Taproot).</p>
-          <div class="btc-qr-wrap">
-            <img src="btc-qr.png" alt="Bitcoin QR code for official receive address" class="btc-qr" width="160" height="160">
-          </div>
-          <div class="btc-address-box">
-            <code id="btcAddress" class="crypto-address">bc1pxp6mscsj69xj6ltcng2m2jr44yfzn3l62nfu6fev8vqsaegj8q6st6nddf</code>
-            <button type="button" class="btn-copy" data-copy-target="btcAddress" title="Copy address">Copy</button>
-          </div>
-          <p class="btc-warning">After sending, submit this form. Your order will remain <strong>PENDING</strong> until the payment is confirmed on the blockchain and verified by the team. Do not assume the membership is active until you receive official email confirmation and your digital fan card.</p>
-        </div>
-
-        <div id="appleNote" class="payment-note" hidden>
-          <p>Apple Gift Card payments require approved secure verification. Codes will never be requested through this form. Contact support after selecting this option for the secure process.</p>
-        </div>
-
-        <button type="submit" class="btn btn-gold btn-full">COMPLETE MEMBERSHIP PURCHASE</button>
-      </form>
-      <p class="form-note" id="purchaseNote" hidden></p>
-    </div>
+<main>
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">ACTOR • PERFORMER</p>
+    <h1>Stories.<br><i>Presence.</i><br>Perspective.</h1>
+    <p class="intro">A cinematic portfolio experience celebrating Aaron Pierre's work across film, television and performance.</p>
+    <div class="buttons"><a class="btn gold" href="#work">Explore work</a><a class="btn ghost" href="sar.html">Site Analysis Report</a></div>
   </div>
-
-  <!-- Simple Admin (lightweight, local) -->
-  <div class="admin-link">
-    <a href="admin.html">Admin</a>
+  <div class="hero-image">
+    <div class="frame"></div>
+    <img src="aaron-pierre.jpg" alt="Aaron Pierre portrait">
+    <div class="caption"><strong>Aaron Pierre</strong><span>Actor</span></div>
   </div>
+</section>
 
-  <script src="script.js"></script>
+<section id="about" class="section about">
+  <div class="section-label">01 / ABOUT</div>
+  <div>
+    <h2>From stagecraft to screen.</h2>
+    <p>Aaron Pierre is an English actor trained at the London Academy of Music and Dramatic Art. His screen work includes <em>The Underground Railroad</em>, <em>Old</em>, <em>Foe</em>, <em>Rebel Ridge</em>, and <em>Mufasa: The Lion King</em>. His career also includes stage work, including his professional debut as Cassio in <em>Othello</em>.</p>
+    <p class="muted">Selected biographical and credit information is based on publicly available industry sources and should be replaced with approved press-kit copy for an authorized official site.</p>
+  </div>
+</section>
+
+<section id="work" class="section">
+  <div class="section-label">02 / SELECTED WORK</div>
+  <div class="work-grid">
+    <article><span>2024</span><h3>Rebel Ridge</h3><p>Terry Richmond</p></article>
+    <article><span>2024</span><h3>Mufasa: The Lion King</h3><p>Voice of Mufasa</p></article>
+    <article><span>2024</span><h3>Genius: MLK/X</h3><p>Malcolm X</p></article>
+    <article><span>2023</span><h3>Foe</h3><p>Terrance</p></article>
+    <article><span>2021</span><h3>The Underground Railroad</h3><p>Caesar</p></article>
+    <article><span>2021</span><h3>Old</h3><p>Mid-Sized Sedan</p></article>
+  </div>
+</section>
+
+<section id="media" class="section media">
+  <div class="section-label">03 / MEDIA</div>
+  <div class="media-card">
+    <div><p class="eyebrow">LATEST HIGHLIGHTS</p><h2>A career in motion.</h2><p class="muted">For an authorized production site, this section can be connected to approved press photography, trailers, interviews, credits and verified social channels.</p></div>
+    <a class="btn gold" href="sar.html">Check site health →</a>
+  </div>
+</section>
+
+<section class="section sar-callout">
+  <div><p class="eyebrow">SAR / SITE ANALYSIS REPORT</p><h2>Built-in technical transparency.</h2><p class="muted">Run a browser-based audit of SEO, accessibility, technical structure and content quality.</p><a class="btn ghost" href="sar.html">Open SAR</a></div>
+</section>
+</main>
+
+<footer><div><strong>AARON PIERRE</strong><span>Actor</span></div><div><a href="sar.html">Site Analysis Report</a><a href="legal.html">Legal</a></div></footer>
 </body>
 </html>
